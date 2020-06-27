@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CardGrabbable : OVRGrabbable
+namespace com.colorfulcoding.customVRLogic
 {
-    private CardController cardController;
-
-    protected override void Start()
+    public class CardGrabbable : OVRGrabbable
     {
-        base.Start();
-        cardController = GetComponent<CardController>();
-    }
+        private CardController cardController;
 
-    public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
-    {
-        base.GrabEnd(linearVelocity, angularVelocity);
-        GetComponent<CardController>().OnGrabEnd();
-    }
+        protected override void Start()
+        {
+            base.Start();
+            cardController = GetComponent<CardController>();
+        }
 
+        public override void GrabEnd(Vector3 linearVelocity, Vector3 angularVelocity)
+        {
+            base.GrabEnd(linearVelocity, angularVelocity);
+            GetComponent<CardController>().OnGrabEnd();
+        }
+
+    }
 }

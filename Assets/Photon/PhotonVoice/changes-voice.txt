@@ -1,0 +1,278 @@
+Photon Voice 2 Change Log
+
+v2.17 (May 29th, 2020)
+   PUN2: v2.18.1 (624dae8c)
+   PhotonVoiceApi: revision 5558
+   FIXED: [PhotonVoiceApi] macOS Photon mic enumerator to support all mic names strings & skip virtual/'ghost' devices.
+   FIXED: [PhotonVoiceApi] UnityAudioOut clip play loop detection which was triggering "overrun" warning every ~5 seconds or so.
+   ADDED: [PhotonVoiceView] warnings during setup about unexpected AudioSource settings.
+   ADDED: [PhotonVoiceView] warnings during setup about Recorder settings.
+   CHANGED: [PhotonVoiceView] log message level WARNING -> DEBUG in Setup when already setup.
+   CHANGED: [PhotonVoiceView] refactored for a better clear setup of Recorder & Speaker.
+   ADDED: [PhotonVoiceView] back Awake and attempt to init there.
+   ADDED: [PhotonVoiceNetwork] attempt to setup PhotonVoiceView when receiving voice info.
+   CHANGED: [PhotonVoiceView] using GetComponent instead of GetComponentInChildren for AudioSource as it is on the same GameObject as the Speaker.
+   CHANGED: [PhotonVoiceNetwork.CheckLateLinking] refactored to accept Speaker directly.
+   CHANGED: [PhotonVoiceNetwork.CheckLateLinking] 'UserData not ViewId': error log is now warning and better message.
+   ADDED: [PhotonVoiceNetwork.CheckLateLinking] warning when received UserData does not match ViewId but ActorNumber match.
+   FIXED: [DemoVoiceUI scene] proper UI update of speaker objects by adjusting previous RemoteSpeakerUI.cs changes.
+   ADDED: [PunVoiceDemo] manual instantiation's custom local/remote prefabs.
+   CHANGED: [PunVoiceDemo] CharacterInstantiation PUN demo script updated to be in sync w/ PUN 2's new OnJoinedInstantiate.
+   FIXED: [PhotonVoiceView] correct way to tell if PhotonView is valid or not yet.
+   FIXED: 2 CS0649 warnings: Field is never assigned by setting default value to false.
+   FIXED: inconsistent EoL warning in on (re)complie/import.
+   FIXED: [Editor only] minor, removing wrong useless code in RecorderEditor.RefreshPhotonMicrophoneDevices.
+   FIXED: [Editor only] NullReferenceException when Photon mic name is null.
+   CHANGED: [Editor only] minor, RecorderEditor.SetEnumIndex method is used in iOS Editor only.
+   CHANGED: minor, consistency, usage of "this." enforced.
+
+v2.16.1 (April 30th, 2020)
+   PUN2: v2.18.1 (624dae8c)
+   PhotonVoiceApi: revision 5464
+
+v2.16 (April 29th, 2020)
+   PUN2: v2.18 (8d47c57f)
+   PhotonVoiceApi: revision 5464
+   ADDED: Recorder.StopRecordingWhenPaused, default is false.
+   ADDED: Recorder.RecordOnlyWhenEnabled and Speaker.PlaybackOnlyWhenEnabled both defaults are false.
+   ADDED: Recorder.SkipDeviceChangeChecks to be used with Recorder.ReactOnSystemChanges. The default is false. Set to true to force restart in all cases.
+   CHANGED: Speaker playback is optimized (AudioStreamPlayer no longer used) and runs on a separate coroutine.
+   ADDED: Speaker playback methods: StartPlayback, StopPlayback and RestartPlayback.
+   ADDED: Speaker.PlaybackStarted property (which is not the same as Speaker.IsPlaying).
+   CHANGED: PhotonVoiceView will try Init in Awake and keeps retrying in Start which was changed to a coroutine.
+   FIXED: harmless PhotonMicrophoneEnumerator error logs on iOS or Android.
+   FIXED: Photon type microphone device validity checks in Recorder.
+   CHANGED: PhotonVoiceStatsGui now shows actual voice frames stats.
+   CHANGED: WebRtcAudioDsp can be used with all Recorder input source types but logs warning when not used with a microphone.
+   FIXED: [DemoVoiceUI scene] Consistency between UI values and actual microphone type and device being used.
+   ADDED: [DemoVoiceUI scene] Option to stream AudioClip.
+   ADDED: [DemoVoiceUI scene] Option to toggle Photon VAD.
+   ADDED: [DemoVoiceUI scene] Option to disable WebRTC DSP.
+   FIXED: [DemoVoiceUI scene] Errors when the room name input field is used when the client is not joined nor connected.
+   CHANGED: [Editor only] Runtime options are now hidden from the Recorder inspector when in play mode.
+   CHANGED: [Editor only] AppSettings hidden from VoiceConnection/PhotonVoiceNetwork when the client is connected.
+   CHANGED: [Editor only] UserData displayed in CachedRemoteVoiceInfos in VoiceConnection/PhotonVoiceNetwork inspector.
+   
+v2.15 (April 07th, 2020)
+   PUN2: v2.17 (793fc726)
+   PhotonVoiceApi: revision 5434
+   FIXED: iOS crash when using Photon MicrophoneType which was introduced in v2.13 due to moving some logic to a worker thread.
+   CHANGED: ReactOnSystemChanges now relies on a native plugin on iOS instead of Unity's AudioSettings.OnAudioConfigurationChanged.
+   CHANGED: always refresh Recorder.PhotonMicrophoneEnumerator when ReactOnSystemChanges is enabled.
+   ADDED: inspector tooltips when hovering over on some VoiceConnection fields shared with PUN's PhotonServerSettings.
+
+v2.14 (March 30th, 2020)
+   PUN2: v2.17 (a5c45f77)
+   PhotonVoiceApi: revision 5350
+   CHANGED: PunVoiceDemo now has AutoTransmit & VAD enabled by default.
+   CHANGED: PunVoiceDemo now has AudioSource added to all prefabs with proper 3D Settings.
+   CHANGED: PunVoiceDemo now has the ground plan/quad 10x bigger so characters don't fall off the edges quickly.
+   CHANGED: PunVoiceDemo now has mesh colliders in trees so characters can't go through them.
+   CHANGED: AppSettings are shown/unfolded by default in VoiceConnection.
+   CHANGED: Recorder.UnityMicrophoneDevice name will hold the full device name instead of null for default device.
+   CHANGED: transport protocol restrictions lifted, replaced with warning if not UDP.
+   CHANGED: Recorder.ReactOnSystemChanges will restart recording only when the device in use is no longer available.
+
+v2.13 (February 03rd, 2020)
+   PUN2: v2.16 (ad87bf1e)
+   PhotonVoiceApi: revision 5350
+   FIXED: switching or rejoining rooms in PUN integration.
+   FIXED: Recorder.InterestGroup returns used value in all cases.
+   FIXED: iOS WebRTC library no longer contains 'main' symbol to not clash with other libraries.
+   FIXED: IL2CPP support for Windows builds using Photon MicrophoneType.
+   CHANGED: Recorder.DebugEchoMode forced to false when Recorder.InterestGroup != 0.
+   CHANGED: prevent connection attempt when app is quitting.
+   CHANGED: PhotonVoiceNetwork.JoinRoom returns bool.
+   ADDED: error logs in case of join or leave failures by voice client.
+   CHANGED: voice client will try to use same UserId as PUN when usePunAppSettings is true.
+   FIXED: minor, avoiding exception when quitting in PUN integration demo.
+
+v2.12 (November 26th, 2019)
+   PUN2: v2.16 (ad87bf1e)
+   PhotonVoiceApi: revision 5282
+   FIXED: DivideByZeroException due to AudioClip.channels becoming zero in Unity.
+   FIXED: voice not working when rejoining or switching rooms in voice clients.
+   ADDED: extra safety checks and error logs when voice channels number is zero from sender or receiver end to avoid exceptions.
+   CHANGED: Speaker component initializtion, setup and linking refactored for easier debugging.
+   CHANGED: Recorder will not set RequiresRestart to true when 'overriding' default Unity microphone device string.
+   ADDED: Unity Microphone helpers methods to Recorder.
+   ADDED: new WebRtcAudioDspEditor warnings if component is disabled or Recorder does not use Microphone type.
+   CHANGED: minor, Recorder caching moved to Awake from OnEnable.
+   CHANGED: WebRtcAudioDsp now supports inactive AudioListener detection and can switch AudioListener used.
+   FIXED: minor, channels number for AudioSpeakerMode.Prologic in WebRtcAudioDsp.
+   FIXED: Type Short conversion check delayed in WebRtcAudioDsp.
+
+v2.11 (October 11th, 2019)
+   PUN2: v2.15 (11b52d6)
+   PhotonVoiceApi: revision 5209
+   FIXED: changes made to some voice components were not persisted on scene save due to custom editors.
+   FIXED: ConnectAndJoin utility script's custom editor errors by removing leftover serialized property.
+   CHANGED: [Better, easier Recorder initialization] Recorder.Init(VoiceClient, object) obsolete replaced with Recorder.Init(VoiceConnection).
+   ADDED: [Better, easier Recorder initialization] VoiceConnection.InitRecorder(Recorder) method. 
+   CHANGED: [Better, easier Recorder initialization] VoiceConnection.PrimaryRecorder is now automatically (internally/implicitly) initialized.
+   CHANGED: Recorder.DebugEchoMode disabled when InterestGroup set to a value != 0.
+   CHANGED: Recorder.AutoStart hidden in custom editor when Recorder is already initialized.
+   CHANGED: always add PrimaryRecorder in ConnectAndJoin utility script if none found no matter the value of AutoTransmit.
+   CHANGED: [Revised custom editor of WebRtcAudioDsp] better placement of warnings.
+   CHANGED: [Revised custom editor of WebRtcAudioDsp] enabling "Bypass" hides other options & warnings.
+   ADDED: info help box to custom editor about speaker prefab requiring Speaker component.
+
+v2.10 (September 25th, 2019)
+   PUN2: v2.15 (11b52d6)
+   PhotonVoiceApi: revision 5209
+   CHANGED: ConnectAndJoin utility script won't override AppVersion.
+   CHANGED: VAD calibration now requires transmission to be enabled to work.
+   FIXED: Usage of custom Settings with PUN integration.
+   FIXED: MissingReferenceException when trying to destroy a Speaker that's already destroyed.
+   ADDED: PhotonVoiceView now has a public Init method that you may call to force setup and initialization in case this did not happen automatically which is unexpected.
+   FIXED: PhotonVoiceView setup and Recorder initialization with PUN integration that uses manual prefab instantiation by delaying first Init to Start from OnEnable.
+   ADDED: New manual instantiation option in CharacterInstantiation utility script which can be tested in DemoVoicePun-Scene.
+   FIXED: minor Android build issues when android:allowBackup and some other attributes or properties are used in the application's AndroidManifest.xml.
+   ADDED: Option to dispatch incoming messages, even if Time.timeScale = 0: PhotonVoiceNetwork.MinimalTimeScaleToDispatchInFixedUpdate. It defaults to not being used. This idea is borrowed from PUN. See PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate. Audio playback still does not work when Time.timeScale is 0.
+
+v2.9 (August 16th, 2019)
+   PUN2: v2.14 (7cb46fd)
+   PhotonVoiceApi: revision 5193
+   CHANGED: minimal Unity version from 5.6.6f2 to 2017.4.7f1
+   ADDED: DemoProximityVoiceChat
+   ADDED: MicAmplifier UtilityScript
+   CHANGED: check for minimal connection settings before connecting
+   CHANGED: WebRTC DSP AECMobileComfortNoise param exposed
+   FIXED: support for 2019.2 (AudioSpeakerMode.Raw deprecated)
+
+v2.8 (June 25th, 2019)
+   PUN2: v2.13 (26fd056)
+   PhotonVoiceApi: revision 5153
+   CHANGED: PhotonVoiceNetwork.usePunAppSettings added to replace VoiceConnection.usePunSettings removed in previous version.
+   FIXED: Recorder VAD properties.
+   CHANGED: Photon mic. enum is now refreshed automatically on system changes.
+   CHANGED: Recorder.SampleTypeConv obsolete, logic is now implicit.
+   FIXED: Setting audio session category for iOS to Photon.Voice.IOS.AudioSessionCategory.MultiRoute.
+   ADDED: "Leave a Review" menu shortcut.
+   CHANGED: Recorder.VoiceDetectionThreshold is now a slider in the custom editor and not a float field.
+
+v2.7 (May 17th, 2019)
+   PUN2: v2.12 (8ea5f65)
+   PhotonVoiceApi: revision 5102
+   CHANGED: Recorder.PhotonVoiceCreatedParams obsolete.
+   CHANGED: asmdef: PhotonUnityNetworking no longer referenced from PhotonVoice.
+   CHANGED: asmdef: PhotonUnityNetworking no longer referenced from PhotonVoice.Editor.
+   ADDED: asmdef: PhotonVoice.PUN and PhotonVoice.PUN.Editor. 
+   CHANGED: VoiceConnection.usePunSettings and related custom editor code removed: use VoiceConnection.ConnectUsingSettings(settings) to pass PUN settings if needed.
+   ADDED: PhotonVoiceEditorUtils and Editor shortcuts to remove PUN or Photon Chat. 
+   CHANGED: iOS's audio initialization session parameters exposed in Editor and can be set using Recoder.SetIosAudioSessionParameters methods.
+   CHANGED: changelog.txt renamed to changes-voice.txt.
+
+v2.6.1 (April 30th, 2019)
+   PUN2: v2.10 (c4cec86)
+   PhotonVoiceApi: revision 5005
+   FIXED: asmdef issue in VoiceConnection's custom Editor Script.
+
+v2.6 (April 26th, 2019)
+   PUN2: v2.10 (c4cec86)
+   PhotonVoiceApi: revision 5005
+   CHANGED: Recorder.ReInit renamed to Recorder.RestartRecording.
+   CHANGED: Recorder.RequiresInit renamed to Recorder.RequiresRestart.
+   CHANGED: IsInitialized is now only checking if Recorder.voiceClient is not null, other logic moved to Recorder.IsRecording.
+   CHANGED: Recorder.RequiresRestart is always false when Recorder.IsRecording is false.
+   CHANGED: Recorder.StartRecording and Recorder.StopRecording methods added.
+   CHANGED: Recorder.AutoStart property added and exposed in custom editor.
+   FIXED: Recorder.TypeConvert changes applied properly when recording is restarted.
+   CHANGED: Recorder.Init should not be used to restart recording, use Recoder.RestartRecording instead.
+   CHANGED: extra checks added for WebRtcAudioDsp (only Microphone supported, once disabled won't be reused)
+   CHANGED: shortcut to PhotonServerSettings added to VoiceConnection custom editor
+   CHANGED: warning removed from PhotonVoiceNetwork after using the newly renamed PascalCase ClientState values
+   CHANGED: showing Photon peer traffic stats from VoiceConnection and PhotonVoiceNetwork editors
+   CHANGED: shortcuts to documentation pages added from main Voice components (help icon)
+
+v2.5.1 (April 3rd, 2019)
+   PUN2: v2.9 (2211f0c)
+   PhotonVoiceApi: revision 5005
+   FIXED: ArgumentException on Speaker end by not starting stream when channels are 0 from Recorder end
+
+v2.5 (March 11th, 2019)
+   PUN2: v2.7 (1fa6aff)
+   PhotonVoiceApi: revision 5005
+   CHANGED: Recorder.IsRecording property added to stop and restart 'recording' after initialization.
+   CHANGED: Recorder.ReactOnSystemChanges property added to reinit due to changes in system audio devices. Default is false for backward compatibility.
+   FIXED: UI in DemoVoice scene, left sidebar should contain all info and gets updated if you change values in Editor.
+   FIXED: WebRtcAudioDsp: proper mapping of AudioSettings.speakerMode to channels number.
+   CHANGED: WebRtcAudioDsp: minor refactoring.
+   FIXED: PhotonVoiceStatsGui, PhotonVoiceLagSimulationGui: return after auto disable components when no VoiceConnection is not found.
+   FIXED: PhotonVoiceLagSimulationGui: VoiceClient.DebugLostPercent applied only when simulation is enabled.
+   FIXED: VoiceConnection: Frames stats reset if not receiving any.
+   FIXED: Recorder custom inspector: "Level" is shown only when recording and set to 0 when not transmitting.
+   
+v2.4.1 (February 15th, 2019)
+   PUN2: v2.7 (1fa6aff)
+   PhotonVoiceApi: revision 5005
+       CHANGED: iOS native plugin initialization moved to separate thread to avoid 0.5 - 1 sec. pauses in main thread execution
+   FIXED: issue that was breaking asset import
+   NOTE: Unity 5.6.6f2 is now the minimum supported Unity version
+   
+v2.4 (February 15th, 2019)
+   PUN2: v2.7 (1fa6aff)
+   PhotonVoiceApi: revision 4981
+   ADDED: Android 64-bit libraries (Unity 2017.4+)
+   ADDED: PhotonVoiceStatsGui Utility Script
+   ADDED: more debug info to VoiceConnection (and PhotonVoiceNetwork) custom Editor
+   CHANGED: Recorder.AudioGroup obsolete, use Recorder.InterestGroup instead
+   CHANGED: VoiceConnection.Client is now LoadBalancingTransport after renaming LoadBalancingFrontend
+   FIXED: AEC Mobile couldn't be enabled in WebRtcAudioDsp
+   CHANGED: allow PhotonVoiceNetwork to join a room with a custom name when AutoConnectAndJoin is disabled
+   CHANGED: DemoVoiceUI scene now has UI properly initialized with correct values
+   CHANGED: PhotonVoiceLagSimulationGui refactored to not clash with PhotonLagSimulationGui
+   
+v2.3 (January 25th, 2019)
+    PUN2: v2.6 (578494a)
+    PhotonVoiceApi: revision 4948
+    FIXED: Speaker linking issues (debug echo toggling, disconnect & reconnect)
+
+v2.2 (December 20th, 2018)
+    PUN2: v2.6v (eeaa6a7)
+    PhotonVoiceApi: revision 4948
+    FIXED: self-hosted Photon Server support (Photon Voice client UserId if no set, will use the same UserId as PUN if available or a new GUID)
+    ADDED: Nintendo Switch support (requires separate add-on)
+    FIXED: 'late Speaker linking' (if a remote voice info event is received before PUN prefab instantiation, could happen during scene switching) 
+    FIXED: AudioSource.spatialBlend is set to 1.0f only when Speaker/AudioSource are created automatically by PhotonVoiceView
+    FIXED: log level filtering
+    FIXED: VAD threshold calibration persists between Recorder sessions
+    FIXED: PS4 integration after update to PhotonVoice2 (still require separate add-on)
+
+v2.1.3 (December 7th, 2018)
+    PUN2: v2.5 (4d59ede)
+    PhotonVoiceApi: revision 4915
+    FIXED: disconnects during delays due to scene loading
+    FIXED: iOS crash due to native plugin files versions mismatch
+    CHANGED: iOS audio output forced to speaker by default when using Photon microphone type
+    
+v2.1.2 (December 3rd, 2018)
+    PUN2: v2.5 (4d59ede)
+    PhotonVoiceApi: revision 4876
+    FIXED: issue due to using Mic. name/Id from Editor in builds
+    CHANGED: renamed Recorder.PhotonVoiceCreatedParams.AudioSource to Recorder.PhotonVoiceCreatedParams.AudioDesc 
+    CHANGED: renamed VoiceAudioPreprocessor to WebRtcAudioDsp
+
+v2.1.1 (November 21st, 2018)
+    PUN2: v2.5 (4d59ede)
+    PhotonVoiceApi: revision 4876 
+    FIXED: Unity Editor freezing when using PUN 2 integration
+
+v2.1 (November 8th, 2018)
+    PUN2: v2.4.1v (14cb68f)
+    PhotonVoiceApi: revision 4876 
+    FIXED: PhotonVoiceNetwork fields can now be updated from the Unity Editor
+    ADDED: Assembly Definitions for Photon Voice 2
+    ADDED: Photon Chat as it was forgotten in initial release
+    FIXED: Photon Voice 2 can connect to self-hosted Photon Server after setting SerializtionProtocol version to 1.6 in this case
+    FIXED: NullRefException when trying to access Recorder.Logger before Recorder.Awake is called
+    FIXED: PhotonVoiceView's Recorder setup when the ViewID changes if the Recorder is not part of the prefab
+    FIXED: Errors or crashes when trying to setup local voice due to exceptions
+    CHANGED: Recorder falls back to Unity microphone if Photon microphone setup encounter an error
+
+v2.0 (October 10th, 2018)
+    PUN2: v2.2.1 (3cd5540)
+    PhotonVoiceApi: revision 4823
+    Initial release of the new major Photon Voice version 2.
+    Work-in-progress documentation: https://doc.photonengine.com/en-us/voice/v2
+    PhotonVoice reference API: https://doc-api.photonengine.com/en/voice/v2
